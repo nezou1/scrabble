@@ -11,6 +11,11 @@ public class Menu {
         System.out.println("2. Regles du jeu");
         System.out.println("3. Quitter");
 
+
+        System.out.println("Veuillez choisir votre pseudo");
+        String pseudo = sc.nextLine();
+
+
         System.out.println("Veuillez saisir votre choix");
         choix = sc.nextInt();
 
@@ -20,17 +25,15 @@ public class Menu {
         }
 
         switch (choix) {
-
             case 1:
-                System.out.println("Veuillez choisir votre pseudo");
-                String pseudo = sc.nextLine();
-                System.out.println("Bonjour "+pseudo+"! Bienvenue au jeu de Scrabble, etes vous pret? :)" );
+                System.out.println("Bonjour "+pseudo+"! Bienvenue au jeu de Scrabble, etes vous pret? :)(y/n)"  );
+                ScraableBoard.printBoard();
                 break;
 
             case 2:
                 regledujeu();
             case 3:
-                System.out.println("A bientot :)");;
+                System.out.println("A bientot "+pseudo+" :)");;
                 return;
 
         }
@@ -89,9 +92,6 @@ public class Menu {
 
         if(choix2.equals("y")){
             menu();
-        }
-        else{
-            System.out.println("A bientot :)");;
         }
     }
 }
