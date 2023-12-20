@@ -1,12 +1,12 @@
 import java.util.*;
+import java.io.*;
 public class Outils {
 
-    public static void sachet(){
-
+    public static char[] sachet() {
         int i;
         char[] sachet = new char[102];
 
-        for(i=0;i<)
+        return sachet;
     }
 
     private static Set<String> dico;
@@ -14,26 +14,46 @@ public class Outils {
 
         // Initialise le dictionnaire avec quelques mots de démonstration
         dico = new HashSet<>();
-        dico.add("JAVA");
-        dico.add("SCRABBLE");
-        dico.add("PROGRAMMING");
+        try {
+            // Spécifiez le chemin du fichier
+            File fichier = new File("dico/dicoScrabble");
 
+            // Créez un objet BufferedReader pour lire le fichier
+            BufferedReader lecteur = new BufferedReader(new FileReader(fichier));
 
+            // Lisez le fichier ligne par ligne
+            String ligne;
+            while ((ligne = lecteur.readLine()) != null) {
+                dico.add(ligne);
+            }
+            // Fermez le BufferedReader
+            lecteur.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
+
     public static boolean motValide(String mot){
+
         return dico.contains(mot.toUpperCase());
     }
 
-    public static void historiqueLettres(char lettre){
+    public static void historiqueLettres(char lettre,char[] sachet){
         //Enregistre l'historique des lettres jouer
 
-        char[] tab = new char[102];
+        char[] lettrejoue = new char[102];
         int i;
+        int j=0;
 
-        for(i=0; i< tab.length;i++){
-            tab[i]=lettre;
+        for(i=0;i<sachet.length;i++){
+            if(lettre == sachet[i]){
+                lettrejoue[j]=lettre;
+                j++;
+                sachet[i]='0';
+            }
         }
+
     }
 
     public static void main(String[] args){

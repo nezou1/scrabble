@@ -48,6 +48,7 @@ public class ScraableBoard {
         for(int i=1; i<16; i++){
             j=j+1;
             board[i][0]=" "+String.valueOf(j)+" |";
+            board[i][16]=" "+String.valueOf(j);
         }
         board[0][1]=" "+String.valueOf(a)+"  ";
         for(int i=2; i<16; i++){
