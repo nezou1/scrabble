@@ -1,0 +1,12 @@
+Explication Projet Scrabble:
+
+
+Set<String> : Un ensemble (Set) est une collection qui ne permet pas de stocker des éléments en double.
+              En d'autres termes, chaque élément dans un ensemble doit être unique.
+              La syntaxe Set<String> indique que cet ensemble est spécifique aux chaînes de caractères (String).
+
+HashSet<> : Elle utilise une table de hachage pour stocker les éléments et fournit un accès constant (en moyenne)
+            aux éléments, ce qui en fait une structure de données efficace pour rechercher des éléments.
+            Comme toutes les implémentations de l'interface Set, HashSet ne permet pas de stocker des
+            éléments en double.
+
