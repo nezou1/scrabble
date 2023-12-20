@@ -16,7 +16,7 @@ public class Outils {
         dico = new HashSet<>();
         try {
             // Spécifiez le chemin du fichier
-            File fichier = new File("dico/dicoScrabble");
+            File fichier = new File("./src/dico/dicoScrabble");
 
             // Créez un objet BufferedReader pour lire le fichier
             BufferedReader lecteur = new BufferedReader(new FileReader(fichier));
