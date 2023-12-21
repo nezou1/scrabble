@@ -75,7 +75,7 @@ public class Outils {
 
     public static int nbPoints(int joueur,char lettre){
 
-
+        return joueur;
     }
 
 
