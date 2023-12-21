@@ -50,32 +50,56 @@ public class Outils {
 
     public static boolean motValide(String mot){
 
-        return dico.contains(mot.toUpperCase());
+        return dico.contains(mot.toLowerCase());
     }
 
-    public static void historiqueLettres(char lettre,char[] sachet){
+    public static void retraitLettresJouées(char lettre,char[] tirageLettre){
         //Enregistre l'historique des lettres jouer
 
         char[] lettrejoue = new char[102];
         int i;
         int j=0;
 
-        for(i=0;i<sachet.length;i++){
-            if(lettre == sachet[i]){
+        for(i=0;i<tirageLettre.length;i++){
+            if(lettre == tirageLettre[i]){
                 lettrejoue[j]=lettre;
                 j++;
-                sachet[i]='0';
+                tirageLettre[i]='0';
             }
         }
 
     }
 
+    public static char[] premierTirage(char[] sachet,int joueur){
+
+        int i ;
+        char[] lettreTirée = new char[7];
+        for(int j = 0; j<7;j++){
+            i=(int) Math.random() * 101;
+            lettreTirée[j]=sachet[i];
+            sachet[i]='0';
+        }
+        return lettreTirée;
+    }
+
+   // public static char[] tirage(char[] sachet,int tour){
+
+    //}
+
+    public static int nbPoints(int joueur,char lettre){
+
+        return joueur;
+    }
+
+
+
+
     public static void main(String[] args){
         dictionnaire();
         System.out.println(motValide("Javax"));
         System.out.println(motValide(""));
-        System.out.println(motValide("JAVA"));
-
+        System.out.println(motValide("java"));
+        System.out.println(motValide("titre"));
     }
 
 

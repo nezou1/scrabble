@@ -10,3 +10,11 @@ HashSet<> : Elle utilise une table de hachage pour stocker les éléments et fou
             Comme toutes les implémentations de l'interface Set, HashSet ne permet pas de stocker des
             éléments en double.
 
+
+Pour le tirage il faut separer le premier tirage des autres tirages car les autre tirage il a le choix entre
+completer son tirage de lettre avec de nouvelle lettre, passer son tour ...
+
+tableau a 3D pour le sachet avec lettre + frequence + nbpoint
+utiliser une array list pour gerer la suppression des lettres
+methode avec en parametre le nombre de lettre a piocher
+tester deja pour un tour de jeu
