@@ -2,11 +2,25 @@ import java.util.*;
 import java.io.*;
 public class Outils {
 
-    public static char[] sachet() {
-        int i;
-        char[] sachet = new char[102];
+    public static List<Character> sachets(){
 
+        List<Character> sachet = new ArrayList<>();
+
+        String lettres = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        int[] frequences = {9, 2, 2, 3, 15, 2, 2, 2, 8, 1, 1, 5, 3, 6, 6, 2, 1, 6, 6, 6, 6, 2, 1, 1, 1, 1};
+
+        for (int i = 0; i < lettres.length(); i++) {
+            char lettre = lettres.charAt(i);
+            int frequence = frequences[i];
+
+
+            for (int j = 0; j < frequence; j++) {
+                sachet.add(lettre);
+            }
+        }
         return sachet;
+
+
     }
 
     private static Set<String> dico;
