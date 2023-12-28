@@ -2,25 +2,29 @@ import java.util.*;
 import java.io.*;
 public class Outils {
 
-    public static List<Character> sachets(){
+    public static String[][][] sachets() {
 
-        List<Character> sachet = new ArrayList<>();
+        /* On a d'abord les lettres, ensuite les points par lettre et pour finir la frequence de lettre */
+        String[][][] sachet = new String[26][1][3];
 
         String lettres = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        int[] points = {1, 3, 3, 2, 1, 4, 2, 4, 1, 8, 10, 1, 2, 1, 1, 3, 8, 1, 1, 1, 1, 1, 4, 10, 10, 10, 10};
         int[] frequences = {9, 2, 2, 3, 15, 2, 2, 2, 8, 1, 1, 5, 3, 6, 6, 2, 1, 6, 6, 6, 6, 2, 1, 1, 1, 1};
 
         for (int i = 0; i < lettres.length(); i++) {
-            char lettre = lettres.charAt(i);
-            int frequence = frequences[i];
+            for (int j = 0; j < sachet[i].length; j++) {
+                char lettre = lettres.charAt(i);
+                int point = points[i];
+                int frequence = frequences[i];
 
 
-            for (int j = 0; j < frequence; j++) {
-                sachet.add(lettre);
+                sachet[i][j][0] = String.valueOf(lettre);
+                sachet[i][j][1] = String.valueOf(point);
+                sachet[i][j][2] = String.valueOf(frequence);
             }
         }
+
         return sachet;
-
-
     }
 
     private static Set<String> dico;
@@ -30,7 +34,7 @@ public class Outils {
         dico = new HashSet<>();
         try {
             // Spécifiez le chemin du fichier
-            File fichier = new File("./src/dico/dicoScrabble");
+            File fichier = new File("./src/dico/french");
 
             // Créez un objet BufferedReader pour lire le fichier
             BufferedReader lecteur = new BufferedReader(new FileReader(fichier));
@@ -47,60 +51,97 @@ public class Outils {
         }
     }
 
+    public static boolean motValide(String mot, char[] tirageLettre) {
+        // Convertit le mot en minuscules pour une comparaison insensible à la casse
+        String motEnMinuscules = mot.toLowerCase();
 
-    public static boolean motValide(String mot){
+        // Vérifie si le mot est dans le dictionnaire
+        boolean motDansDico = dico.contains(motEnMinuscules);
 
-        return dico.contains(mot.toLowerCase());
-    }
-
-    public static void retraitLettresJouées(char lettre,char[] tirageLettre){
-        //Enregistre l'historique des lettres jouer
-
-        char[] lettrejoue = new char[102];
-        int i;
-        int j=0;
-
-        for(i=0;i<tirageLettre.length;i++){
-            if(lettre == tirageLettre[i]){
-                lettrejoue[j]=lettre;
-                j++;
-                tirageLettre[i]='0';
+        // Vérifie si chaque lettre du mot est présente dans les lettres tirées
+        boolean lettresDansTirage = true;
+        for (int i = 0; i < mot.length(); i++) {
+            char lettre = motEnMinuscules.charAt(i);
+            if (!lettresDansTirage(lettre, tirageLettre)) {
+                lettresDansTirage = false;
+                break;
             }
         }
 
+        // Renvoie vrai uniquement si le mot est dans le dictionnaire et que toutes les lettres sont dans les lettres tirées
+        return motDansDico && lettresDansTirage;
     }
 
-    public static char[] premierTirage(char[] sachet,int joueur){
+    private static boolean lettresDansTirage(char lettre, char[] tirageLettre) {
 
-        int i ;
+        char lettreMaj = Character.toUpperCase(lettre);
+        for (int i = 0; i < tirageLettre.length; i++) {
+            if (lettreMaj == tirageLettre[i]) {
+                tirageLettre[i] = '0'; // Marque la lettre comme utilisée
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static char[] premierTirage(String[][][] sachet, int joueur) {
         char[] lettreTirée = new char[7];
-        for(int j = 0; j<7;j++){
-            i=(int) Math.random() * 101;
-            lettreTirée[j]=sachet[i];
-            sachet[i]='0';
+        int i;
+        for (int j = 0; j < 7; j++) {
+
+            do{
+                i = (int) (Math.random() * 25);
+
+            }while(Integer.parseInt(sachet[i][0][2]) < 1);
+
+            lettreTirée[j] = sachet[i][0][0].charAt(0); // Récupère la lettre à partir de l'élément [i][0][0]
+
+            int frequence = Integer.parseInt(sachet[i][0][2]) -1;
+            sachet[i][0][2] = String.valueOf(frequence) ;// Marque la lettre comme tirée
         }
         return lettreTirée;
     }
 
-   // public static char[] tirage(char[] sachet,int tour){
 
-    //}
 
-    public static int nbPoints(int joueur,char lettre){
+   /*public static char[] tirage(char[] sachet,int tour){
 
-        return joueur;
+    }*/
+
+    public static int nbPoints(int joueur, String mot, char[] tirageLettre, String[][][] sachet) {
+        int nbPoints = 0;
+
+        // Vérifie si le mot est valide
+        if (motValide(mot, tirageLettre)) {
+            // Calcule le nombre de points pour chaque lettre du mot
+            for (int i = 0; i < mot.length(); i++) {
+
+                char lettre = Character.toUpperCase(mot.charAt(i)); // Convertit en majuscules pour correspondre à la casse du sachet
+
+                for (int j = 0; j < sachet.length; j++) {
+                    for (int k = 0; k < sachet[i].length; k++) {
+                        if(sachet[j][k][0].equals(String.valueOf(lettre))){
+                            nbPoints += Integer.parseInt(sachet[j][k][1]);
+                            break;
+
+                        }
+
+                    }
+                }
+            }
+        }
+        return nbPoints;
     }
-
-
-
-
-    public static void main(String[] args){
+    public static void main(String[] args) {
         dictionnaire();
-        System.out.println(motValide("Javax"));
-        System.out.println(motValide(""));
-        System.out.println(motValide("java"));
-        System.out.println(motValide("titre"));
-    }
+        String[][][] sachet = sachets();
+        char[] joueur1 = premierTirage(sachet,1);
+        char[] test = {'W','R','E','I','B','O','V'};
+        char[] test2 = {'N','R','E','I','B','O','V'};
 
+        System.out.println(nbPoints(1,"BOIRE",test,sachet));
+        System.out.println(nbPoints(1,"NOIR",test2,sachet));
+
+    }
 
 }

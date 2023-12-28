@@ -27,7 +27,7 @@ public class Menu {
         switch (choix) {
             case 1:
                 System.out.println("Bonjour "+pseudo+"! Bienvenue au jeu de Scrabble, etes vous pret? :)(y/n)"  );
-                ScraableBoard.printBoard();
+                Plateau.afficherPlateau();
                 break;
 
             case 2:

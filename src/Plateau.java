@@ -1,4 +1,4 @@
-//import java.awt.*;
+import java.awt.*;
 
 public class Plateau {
 
@@ -58,5 +58,4 @@ public class Plateau {
         //System.out.println();
         //System.out.println("Veuillez piocher 7 lettres.");
 
-    }
-}
+
