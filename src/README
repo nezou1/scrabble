@@ -18,3 +18,17 @@ tableau a 3D pour le sachet avec lettre + frequence + nbpoint
 utiliser une array list pour gerer la suppression des lettres
 methode avec en parametre le nombre de lettre a piocher
 tester deja pour un tour de jeu
+
+"\u001B[48;2;" + couleur.getRed() + ";" + couleur.getGreen() + ";" + couleur.getBlue() + "m " :
+
+C'est une séquence d'échappement ANSI qui permet de définir la couleur de fond du texte dans la console.
+Les composants RVB de la couleur (Red, Green, Blue) sont extraits de l'objet Color passé en paramètre.
+Cette séquence indique que la couleur de fond de la console doit être définie avec les composants RVB spécifiés.
+
++ lettre + " :
+
+Cela ajoute la lettre spécifiée en paramètre à la séquence de couleur, donc la lettre apparaîtra avec la couleur de fond définie.
+
+\u001B[0m|" :
+
+C'est une autre séquence d'échappement ANSI qui réinitialise la couleur à la couleur par défaut de la console. Cela assure que les affichages ultérieurs dans la console ne sont pas affectés par la couleur définie précédemment.

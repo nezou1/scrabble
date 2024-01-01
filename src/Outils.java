@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.util.*;
 import java.io.*;
 public class Outils {
@@ -64,10 +65,14 @@ public class Outils {
             char lettre = motEnMinuscules.charAt(i);
             if (!lettresDansTirage(lettre, tirageLettre)) {
                 lettresDansTirage = false;
+                System.out.println("Votre mot est incorrect !");
                 break;
             }
         }
 
+        if(motDansDico && lettresDansTirage){
+            System.out.println("Votre mot est accepté !");
+        }
         // Renvoie vrai uniquement si le mot est dans le dictionnaire et que toutes les lettres sont dans les lettres tirées
         return motDansDico && lettresDansTirage;
     }
@@ -84,7 +89,7 @@ public class Outils {
         return false;
     }
 
-    public static char[] premierTirage(String[][][] sachet, int joueur) {
+    public static char[] premierTirage(String[][][] sachet, String joueur) {
         char[] lettreTirée = new char[7];
         int i;
         for (int j = 0; j < 7; j++) {
@@ -108,7 +113,7 @@ public class Outils {
 
     }*/
 
-    public static int nbPoints(int joueur, String mot, char[] tirageLettre, String[][][] sachet) {
+    public static int nbPoints(String joueur, String mot, char[] tirageLettre, String[][][] sachet) {
         int nbPoints = 0;
 
         // Vérifie si le mot est valide
@@ -132,7 +137,33 @@ public class Outils {
         }
         return nbPoints;
     }
-    public static void main(String[] args) {
+    public static char[][] placementMot(String ligne, int colonne, int sens, String mot) {
+        int indexLigne = ligne.charAt(0) - 'A';
+        int indexColonne = colonne - 1;
+
+        if (sens == 0) { // Horizontal
+            for (int i = 0; i < mot.length(); i++) {
+                Plateau.plateau[indexLigne][indexColonne + i] = mot.charAt(i);
+            }
+        } else if (sens == 1) { // Vertical
+            for (int i = 0; i < mot.length(); i++) {
+                Plateau.plateau[indexLigne + i][indexColonne] = mot.charAt(i);
+            }
+        } else {
+            // Gérer le cas où le sens n'est ni horizontal ni vertical
+            System.out.println("Sens invalide. Utilisez 0 pour horizontal ou 1 pour vertical.");
+        }
+
+        return Plateau.plateau;
+    }
+
+
+
+
+
+
+
+/*    public static void main(String[] args) {
         dictionnaire();
         String[][][] sachet = sachets();
         char[] joueur1 = premierTirage(sachet,1);
@@ -142,6 +173,7 @@ public class Outils {
         System.out.println(nbPoints(1,"BOIRE",test,sachet));
         System.out.println(nbPoints(1,"NOIR",test2,sachet));
 
-    }
+    }*/
+
 
 }

@@ -3,37 +3,80 @@ public class Menu {
 
 
     public static void menu(){
-        Scanner sc = new Scanner(System.in).useDelimiter("\n");
+
         int choix;
+        Scanner sc = new Scanner(System.in).useDelimiter("\n");
 
         System.out.println("MENU:");
         System.out.println("1. Démarrer");
         System.out.println("2. Regles du jeu");
         System.out.println("3. Quitter");
+        System.out.println();
 
 
-        System.out.println("Veuillez choisir votre pseudo");
-        String pseudo = sc.nextLine();
 
-
-        System.out.println("Veuillez saisir votre choix");
+        System.out.print("Veuillez saisir votre choix: ");
         choix = sc.nextInt();
+        System.out.println();
 
         if(choix>3 || choix<1){
             System.out.println("ERREUR: Choix inexistant ");
             return;
         }
-
+        int nb=0;
         switch (choix) {
             case 1:
-                System.out.println("Bonjour "+pseudo+"! Bienvenue au jeu de Scrabble, etes vous pret? :)(y/n)"  );
-                Plateau.afficherPlateau();
+                String[][][] sachet = Outils.sachets();
+                Outils.dictionnaire();
+
+                String[] joueurs;
+                joueurs = Partie.nbJoueur();
+
+                System.out.println();
+                System.out.println("Bonjour a vous ! Bienvenue au jeu de Scrabble, A vous de jouer :)"  );
+                System.out.println();
+                Plateau.afficherPlateauVide();
+
+                do{
+                    for(int i = 0; i< joueurs.length;i++){
+
+                        System.out.println("Voici votre chavelet " + joueurs[i] + " :");
+                        char [] tirage = Outils.premierTirage(sachet,joueurs[i]);
+
+                        for(char var : tirage){
+                            System.out.print(var + "." );
+                        }
+
+                        System.out.println();
+                        System.out.println("Proposez un mot :");
+                        sc.nextLine();
+                        String mot = sc.nextLine();
+                        Outils.motValide(mot,tirage);
+
+                        System.out.println("Ou souhaitez-vous placer la premiere lettre ?");
+                        System.out.print("Ligne:"); String ligne = sc.nextLine();
+                        System.out.print("Colonne:"); int colonne = sc.nextInt();
+
+                        System.out.println("Quel sens souhaitez vous, repondez 0 ou 1 ? (0.Vertical ou 1.Horizontal");
+                        int sens = sc.nextInt();
+
+                        Plateau.placementMot(ligne,colonne,sens,mot);
+                        nb++;
+
+                        if(i==joueurs.length-1){
+                            i=0;
+                        }
+
+                    }
+
+                }while(nb<9);
+
                 break;
 
             case 2:
                 regledujeu();
             case 3:
-                System.out.println("A bientot "+pseudo+" :)");;
+                System.out.println("A bientot :)");
                 return;
 
         }
