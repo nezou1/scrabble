@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.util.Scanner;
 public class Menu {
 
@@ -15,7 +16,7 @@ public class Menu {
 
 
 
-        System.out.print("Veuillez saisir votre choix: ");
+        System.out.print("Bonjour à vous! Veuillez saisir votre choix: ");
         choix = sc.nextInt();
         System.out.println();
 
@@ -27,10 +28,12 @@ public class Menu {
         switch (choix) {
             case 1:
                 String[][][] sachet = Outils.sachets();
-                Outils.dictionnaire();
-
                 String[] joueurs;
                 joueurs = Partie.nbJoueur();
+
+                Outils.dictionnaire();
+
+                String mot;
 
                 System.out.println();
                 System.out.println("Bonjour a vous ! Bienvenue au jeu de Scrabble, A vous de jouer :)"  );
@@ -46,22 +49,27 @@ public class Menu {
                         for(char var : tirage){
                             System.out.print(var + "." );
                         }
-
                         System.out.println();
-                        System.out.println("Proposez un mot :");
-                        sc.nextLine();
-                        String mot = sc.nextLine();
-                        Outils.motValide(mot,tirage);
 
-                        System.out.println("Ou souhaitez-vous placer la premiere lettre ?");
-                        System.out.print("Ligne:"); String ligne = sc.nextLine();
-                        System.out.print("Colonne:"); int colonne = sc.nextInt();
+                        int passerSonTour = Outils.passerSonTour(joueurs[i],joueurs);
 
-                        System.out.println("Quel sens souhaitez vous, repondez 0 ou 1 ? (0.Vertical ou 1.Horizontal");
-                        int sens = sc.nextInt();
+                        if(passerSonTour == 0){
 
-                        Plateau.placementMot(ligne,colonne,sens,mot);
-                        nb++;
+                            System.out.println("Proposez un mot :");
+                            sc.nextLine();
+                            mot = sc.nextLine();
+                            Outils.motValide(mot,tirage);
+                            System.out.println("Ou souhaitez-vous placer la premiere lettre ?");
+
+                            System.out.print("Ligne:"); String ligne = sc.nextLine();
+                            System.out.print("Colonne:"); int colonne = sc.nextInt();
+
+                            System.out.println("Quel sens souhaitez vous, repondez 0 ou 1 ? (0.Vertical ou 1.Horizontal");
+                            int sens = sc.nextInt();
+
+                            Plateau.placementMot(ligne,colonne,sens,mot);
+                            nb++;
+                        }
 
                         if(i==joueurs.length-1){
                             i=0;

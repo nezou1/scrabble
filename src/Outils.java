@@ -3,6 +3,7 @@ import java.util.*;
 import java.io.*;
 public class Outils {
 
+    static Scanner sc = new Scanner(System.in).useDelimiter("\n");
     public static String[][][] sachets() {
 
         /* On a d'abord les lettres, ensuite les points par lettre et pour finir la frequence de lettre */
@@ -65,16 +66,15 @@ public class Outils {
             char lettre = motEnMinuscules.charAt(i);
             if (!lettresDansTirage(lettre, tirageLettre)) {
                 lettresDansTirage = false;
-                System.out.println("Votre mot est incorrect !");
                 break;
             }
         }
 
         if(motDansDico && lettresDansTirage){
-            System.out.println("Votre mot est accepté !");
+            System.out.println("Votre mot est accepté!");
         }
-        // Renvoie vrai uniquement si le mot est dans le dictionnaire et que toutes les lettres sont dans les lettres tirées
-        return motDansDico && lettresDansTirage;
+
+        return motDansDico && lettresDansTirage; // Renvoie vrai uniquement si le mot est dans le dictionnaire et que toutes les lettres sont dans les lettres tirées
     }
 
     private static boolean lettresDansTirage(char lettre, char[] tirageLettre) {
@@ -157,23 +157,91 @@ public class Outils {
         return Plateau.plateau;
     }
 
+    public static int passesSuccessives = 0;
+    public static int passerSonTour(String joueur, String[] joueurs) {
+
+        int nbJoueurs = joueurs.length;
+
+        final int NOMBRE_MAX_PASSES_GLOBALES = nbJoueurs*3;
+        int next ;
+
+        System.out.println("Souhaitez vous passer votre tour ? (y/n)");
+
+        String passe = sc.nextLine();
+
+        if(passe.equals("y")) {
+            next = 1;
+            System.out.println(joueur + " a choisi de passer son tour.\n");
+
+            passesSuccessives++;                                                                                                                // Si un joueur passe son tour, le compteur est incrémenté
+
+            if (passesSuccessives >= NOMBRE_MAX_PASSES_GLOBALES) {
+                // Vérifie si le nombre total de passes successives atteint la limite
+                System.out.println("Fin de la partie, nombre maximal de passes successives atteint : " + NOMBRE_MAX_PASSES_GLOBALES);
+                // Ajoutez ici le code pour gérer la fin de la partie (par exemple, afficher le score final, etc.)
+            }
+        }
+        else{
+            next = 0;
+            System.out.println(joueur + " a choisi de ne pas passer son tour.");
+        }
+
+        return next;
+
+    }
+    public static void reinitialiserPassesSuccessives() {
+        passesSuccessives = 0;
+    }
+
+    public static void finDePartie(String[][][] sachet) {
+
+        boolean sachetVide = true;
+        for (int i = 0; i < sachet.length; i++) {
+            if (Integer.parseInt(sachet[i][0][2]) > 0) {
+                sachetVide = false;
+                break;
+            }
+        }
+        if (sachetVide) {
+            System.out.println("Fin de la partie, le sachet est vide.");
+            // Ajoutez ici le code pour gérer la fin de la partie (par exemple, afficher le score final, etc.)
+            System.exit(0); // Termine l'exécution du programme
+        }
+
+        // Ajoutez d'autres conditions de fin de partie si nécessaire
+    }
 
 
 
 
 
 
-/*    public static void main(String[] args) {
+
+   public static void main(String[] args) {
         dictionnaire();
         String[][][] sachet = sachets();
-        char[] joueur1 = premierTirage(sachet,1);
+        String[] joueurs = {"n","y"};
+        char[] joueur1 = premierTirage(sachet,"nezz");
         char[] test = {'W','R','E','I','B','O','V'};
-        char[] test2 = {'N','R','E','I','B','O','V'};
+        char[] test2 = {'N','S','A','I','B','O','E'};
+       String mot;
 
-        System.out.println(nbPoints(1,"BOIRE",test,sachet));
-        System.out.println(nbPoints(1,"NOIR",test2,sachet));
+       for(int i = 0;i<sachet.length;i++){
+           for(int j = 0;j<sachet[i].length;j++){
+               for(int k = 0;k<sachet[i][j].length;k++){
+                   System.out.print(sachet[i][j][k]+"\n");
 
-    }*/
+
+               }
+           }
+       }
+
+      // System.out.println(nbPoints("nezz","BOIRE",test,sachet));
+      // System.out.println(motValide("soie",test2));
+
+
+
+    }
 
 
 }

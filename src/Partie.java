@@ -9,9 +9,7 @@ public class Partie {
         Scanner sc = new Scanner(System.in).useDelimiter("\n");
 
         do{
-
-            System.out.println("4 joueurs maximum est acceptée au Scrabble :)");
-            System.out.println("Combien de joueur etes-vous ?");
+            System.out.println("Combien de joueur etes-vous ? ( 4 maxi )");
             nbjoueurs = sc.nextInt();
             joueurs = new String[nbjoueurs];
 
