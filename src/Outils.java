@@ -1,12 +1,13 @@
 import java.awt.*;
 import java.util.*;
 import java.io.*;
+
 public class Outils {
 
     static Scanner sc = new Scanner(System.in).useDelimiter("\n");
-    public static String[][][] sachets() {
 
-        /* On a d'abord les lettres, ensuite les points par lettre et pour finir la frequence de lettre */
+    public static String[][][] sachets() {
+        // On a d'abord les lettres, ensuite les points par lettre et pour finir la fréquence de lettre
         String[][][] sachet = new String[26][1][3];
 
         String lettres = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -19,7 +20,6 @@ public class Outils {
                 int point = points[i];
                 int frequence = frequences[i];
 
-
                 sachet[i][j][0] = String.valueOf(lettre);
                 sachet[i][j][1] = String.valueOf(point);
                 sachet[i][j][2] = String.valueOf(frequence);
@@ -30,18 +30,17 @@ public class Outils {
     }
 
     private static Set<String> dico;
-    public static void dictionnaire(){
 
-        // Initialise le dictionnaire avec quelques mots de démonstration
+    public static void dictionnaire() {
         dico = new HashSet<>();
         try {
-            // Spécifiez le chemin du fichier
+            // Spécifie le chemin du fichier
             File fichier = new File("./src/dico/french");
 
-            // Créez un objet BufferedReader pour lire le fichier
+            // Créer un objet BufferedReader pour lire le fichier
             BufferedReader lecteur = new BufferedReader(new FileReader(fichier));
 
-            // Lisez le fichier ligne par ligne
+            // Lise le fichier ligne par ligne
             String ligne;
             while ((ligne = lecteur.readLine()) != null) {
                 dico.add(ligne);
@@ -54,7 +53,6 @@ public class Outils {
     }
 
     public static boolean motValide(String mot, char[] tirageLettre) {
-        // Convertit le mot en minuscules pour une comparaison insensible à la casse
         String motEnMinuscules = mot.toLowerCase();
 
         // Vérifie si le mot est dans le dictionnaire
@@ -70,7 +68,7 @@ public class Outils {
             }
         }
 
-        if(motDansDico && lettresDansTirage){
+        if (motDansDico && lettresDansTirage) {
             System.out.println("Votre mot est accepté!");
         }
 
@@ -78,7 +76,6 @@ public class Outils {
     }
 
     private static boolean lettresDansTirage(char lettre, char[] tirageLettre) {
-
         char lettreMaj = Character.toUpperCase(lettre);
         for (int i = 0; i < tirageLettre.length; i++) {
             if (lettreMaj == tirageLettre[i]) {
@@ -93,25 +90,41 @@ public class Outils {
         char[] lettreTirée = new char[7];
         int i;
         for (int j = 0; j < 7; j++) {
-
-            do{
+            do {
                 i = (int) (Math.random() * 25);
-
-            }while(Integer.parseInt(sachet[i][0][2]) < 1);
+            } while (Integer.parseInt(sachet[i][0][2]) < 1);
 
             lettreTirée[j] = sachet[i][0][0].charAt(0); // Récupère la lettre à partir de l'élément [i][0][0]
-
-            int frequence = Integer.parseInt(sachet[i][0][2]) -1;
-            sachet[i][0][2] = String.valueOf(frequence) ;// Marque la lettre comme tirée
+            int frequence = Integer.parseInt(sachet[i][0][2]) - 1;
+            sachet[i][0][2] = String.valueOf(frequence); // Marque la lettre comme tirée
         }
         return lettreTirée;
     }
 
+    public static char[] tirageSuivant(String[][][] sachet, String joueur) {
+        char[] lettresTirees = new char[7];
+        int frequence;
+        int indexLettre;
 
+        for (int i = 0; i < 7; i++) {
+            char lettre;
+            do {
+                indexLettre = (int) (Math.random() * 26);
 
-   /*public static char[] tirage(char[] sachet,int tour){
+                lettre = sachet[indexLettre][0][0].charAt(0);
+                frequence = Integer.parseInt(sachet[indexLettre][0][2]);
 
-    }*/
+            } while (frequence <= 0);
+
+            frequence = Integer.parseInt(sachet[indexLettre][0][2]) - 1;
+            sachet[indexLettre][0][2] = String.valueOf(frequence);
+
+            // Ajoute la lettre à la liste des lettres tirées
+            lettresTirees[i] = lettre;
+        }
+
+        return lettresTirees;
+    }
 
     public static int nbPoints(String joueur, String mot, char[] tirageLettre, String[][][] sachet) {
         int nbPoints = 0;
@@ -125,63 +138,41 @@ public class Outils {
 
                 for (int j = 0; j < sachet.length; j++) {
                     for (int k = 0; k < sachet[i].length; k++) {
-                        if(sachet[j][k][0].equals(String.valueOf(lettre))){
+                        if (sachet[j][k][0].equals(String.valueOf(lettre))) {
                             nbPoints += Integer.parseInt(sachet[j][k][1]);
                             break;
-
                         }
-
                     }
                 }
             }
         }
         return nbPoints;
     }
-    public static char[][] placementMot(String ligne, int colonne, int sens, String mot) {
-        int indexLigne = ligne.charAt(0) - 'A';
-        int indexColonne = colonne - 1;
 
-        if (sens == 0) { // Horizontal
-            for (int i = 0; i < mot.length(); i++) {
-                Plateau.plateau[indexLigne][indexColonne + i] = mot.charAt(i);
-            }
-        } else if (sens == 1) { // Vertical
-            for (int i = 0; i < mot.length(); i++) {
-                Plateau.plateau[indexLigne + i][indexColonne] = mot.charAt(i);
-            }
-        } else {
-            // Gérer le cas où le sens n'est ni horizontal ni vertical
-            System.out.println("Sens invalide. Utilisez 0 pour horizontal ou 1 pour vertical.");
-        }
-
-        return Plateau.plateau;
-    }
 
     public static int passesSuccessives = 0;
+
     public static int passerSonTour(String joueur, String[] joueurs) {
-
         int nbJoueurs = joueurs.length;
-
-        final int NOMBRE_MAX_PASSES_GLOBALES = nbJoueurs*3;
-        int next ;
+        final int NOMBRE_MAX_PASSES_GLOBALES = nbJoueurs * 3;
+        int next;
 
         System.out.println("Souhaitez vous passer votre tour ? (y/n)");
 
         String passe = sc.nextLine();
 
-        if(passe.equals("y")) {
+        if (passe.equals("y")) {
             next = 1;
             System.out.println(joueur + " a choisi de passer son tour.\n");
 
-            passesSuccessives++;                                                                                                                // Si un joueur passe son tour, le compteur est incrémenté
+            passesSuccessives++; // Si un joueur passe son tour, le compteur est incrémenté
 
             if (passesSuccessives >= NOMBRE_MAX_PASSES_GLOBALES) {
                 // Vérifie si le nombre total de passes successives atteint la limite
                 System.out.println("Fin de la partie, nombre maximal de passes successives atteint : " + NOMBRE_MAX_PASSES_GLOBALES);
-                // Ajoutez ici le code pour gérer la fin de la partie (par exemple, afficher le score final, etc.)
+
             }
-        }
-        else{
+        } else {
             next = 0;
             System.out.println(joueur + " a choisi de ne pas passer son tour.");
         }
@@ -189,12 +180,12 @@ public class Outils {
         return next;
 
     }
+
     public static void reinitialiserPassesSuccessives() {
         passesSuccessives = 0;
     }
 
     public static void finDePartie(String[][][] sachet) {
-
         boolean sachetVide = true;
         for (int i = 0; i < sachet.length; i++) {
             if (Integer.parseInt(sachet[i][0][2]) > 0) {
@@ -204,44 +195,7 @@ public class Outils {
         }
         if (sachetVide) {
             System.out.println("Fin de la partie, le sachet est vide.");
-            // Ajoutez ici le code pour gérer la fin de la partie (par exemple, afficher le score final, etc.)
             System.exit(0); // Termine l'exécution du programme
         }
-
-        // Ajoutez d'autres conditions de fin de partie si nécessaire
     }
-
-
-
-
-
-
-
-   public static void main(String[] args) {
-        dictionnaire();
-        String[][][] sachet = sachets();
-        String[] joueurs = {"n","y"};
-        char[] joueur1 = premierTirage(sachet,"nezz");
-        char[] test = {'W','R','E','I','B','O','V'};
-        char[] test2 = {'N','S','A','I','B','O','E'};
-       String mot;
-
-       for(int i = 0;i<sachet.length;i++){
-           for(int j = 0;j<sachet[i].length;j++){
-               for(int k = 0;k<sachet[i][j].length;k++){
-                   System.out.print(sachet[i][j][k]+"\n");
-
-
-               }
-           }
-       }
-
-      // System.out.println(nbPoints("nezz","BOIRE",test,sachet));
-      // System.out.println(motValide("soie",test2));
-
-
-
-    }
-
-
 }

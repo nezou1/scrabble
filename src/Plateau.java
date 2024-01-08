@@ -13,7 +13,6 @@ public class Plateau {
     public static char[][] afficherPlateauVide() {
         Color[][] couleurs = new Color[15][15];
 
-
         for (int i = 0; i < 15; i++) {
             for (int j = 0; j < 15; j++) {
                 plateau[i][j] = ' ';
@@ -57,37 +56,37 @@ public class Plateau {
             for (int j = 0; j < 15; j++) {
                 if (i == indexLigne && j == indexColonne) {
                     if (Plateau.plateau[indexLigne][indexColonne + 1] != ' ') {
-
-                        System.out.println("Cette case est déja prise");
-
+                        System.out.println("Cette case est déjà prise");
                     } else {
                         if (sens == 0) { // Horizontal
-                            if (Plateau.plateau[indexLigne][indexColonne + 1] == ' ')
+                            if (Plateau.plateau[indexLigne][indexColonne + 1] == ' ') {
                                 for (int k = 0; k < mot.length(); k++) {
                                     Plateau.plateau[indexLigne][indexColonne + k] = motMaj.charAt(k);
                                     i++;
                                 }
                             }
-                        }if (sens == 1) { // Vertical
-                            if (Plateau.plateau[indexLigne + 1][indexColonne] == ' ')
+                        }
+                        if (sens == 1) { // Vertical
+                            if (Plateau.plateau[indexLigne + 1][indexColonne] == ' ') {
                                 for (int k = 0; k < mot.length(); k++) {
                                     Plateau.plateau[indexLigne + k][indexColonne] = motMaj.charAt(k);
                                     i++;
                                 }
                             }
                         }
-
+                    }
+                }
             }
         }
 
-
-
-
-
-        Plateau.afficherCase(' ', Plateau.rouge); System.out.print(": Mot triple \t");
-        Plateau.afficherCase(' ', Plateau.rose); System.out.print(": Mot Double \t");
-        Plateau.afficherCase(' ', Plateau.bleuFonce); System.out.print(": Lettre triple \t");
-        Plateau.afficherCase(' ', Plateau.bleuPastel); System.out.print(": Lettre double \t");
+        Plateau.afficherCase(' ', Plateau.rouge);
+        System.out.print(": Mot triple \t");
+        Plateau.afficherCase(' ', Plateau.rose);
+        System.out.print(": Mot Double \t");
+        Plateau.afficherCase(' ', Plateau.bleuFonce);
+        System.out.print(": Lettre triple \t");
+        Plateau.afficherCase(' ', Plateau.bleuPastel);
+        System.out.print(": Lettre double \t");
 
         System.out.println("\n");
 
@@ -96,9 +95,9 @@ public class Plateau {
         for (int i = 0; i < 15; i++) {
             System.out.print((char) ('A' + i) + " |");
             for (int j = 0; j < 15; j++) {
-                Plateau.afficherCase(Plateau.plateau[i][j], Plateau.determinerCouleurCase(i,j));  // Utilisation de la méthode afficherCase avec couleur
+                Plateau.afficherCase(Plateau.plateau[i][j], Plateau.determinerCouleurCase(i, j));  // Utilisation de la méthode afficherCase avec couleur
             }
-            System.out.print(" "+ (char)('A' + i));
+            System.out.print(" " + (char) ('A' + i));
             System.out.println();
             System.out.println("  ----------------------------------------------------------------------------");
         }
@@ -148,25 +147,25 @@ public class Plateau {
         }
 
         if (ligne == 0 || ligne == 7 || ligne == 14) {
-            if (colonne == 3  || symmetricColonne == 3 ) {
+            if (colonne == 3 || symmetricColonne == 3) {
                 return bleuPastel; //
             }
         }
 
-        if (ligne == 3 || ligne == 11 ) {
-            if (colonne == 0  || colonne == 7 || symmetricColonne == 0 || symmetricColonne == 7 ) {
+        if (ligne == 3 || ligne == 11) {
+            if (colonne == 0 || colonne == 7 || symmetricColonne == 0 || symmetricColonne == 7) {
                 return bleuPastel; //
             }
         }
 
-        if (ligne == 6 || ligne == 8 ) {
-            if (colonne == 2  || colonne == 6 || symmetricColonne == 2 || symmetricColonne == 6 ) {
+        if (ligne == 6 || ligne == 8) {
+            if (colonne == 2 || colonne == 6 || symmetricColonne == 2 || symmetricColonne == 6) {
                 return bleuPastel; //
             }
         }
 
-        if (ligne == 2 || ligne == 6 || ligne == 8 || ligne == 12 ) {
-            if (colonne == 6  ||  symmetricColonne == 6  ) {
+        if (ligne == 2 || ligne == 6 || ligne == 8 || ligne == 12) {
+            if (colonne == 6 || symmetricColonne == 6) {
                 return bleuPastel; //
             }
         }
@@ -174,14 +173,18 @@ public class Plateau {
         return blanc;
     }
 
-
     public static void afficherCase(char lettre, Color couleur) {
-
-        System.out.print(" \u001B[48;2;" + couleur.getRed() + ";" + couleur.getGreen() + ";" + couleur.getBlue() + "m " + " \u001B[38;2;0;0;0m" + lettre  + " \u001B[0m");
-
+        System.out.print(" \u001B[48;2;" + couleur.getRed() + ";" + couleur.getGreen() + ";" + couleur.getBlue() + "m "
+                + " \u001B[38;2;0;0;0m" + lettre + " \u001B[0m");
     }
 
+    public static boolean caseEstVide(int ligne, int colonne) {
+        return plateau[ligne][colonne] == ' ';
+    }
 
-
+    public static boolean premierMotPlaceAuMilieu(String mot, int colonne) {
+        return mot.length() > 0 && colonne == 7;
+    }
 }
+
 
