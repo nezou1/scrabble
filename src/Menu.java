@@ -31,15 +31,15 @@ public class Menu {
                 Outils.dictionnaire();
 
                 String mot;
+                boolean motValide;
 
                 System.out.println();
-                System.out.println("Bonjour à vous ! Bienvenue au jeu de Scrabble, A vous de jouer :)");
+                System.out.println("Bonjour à vous ! Bienvenue au jeu de Scrabble, à vous de jouer :)");
                 System.out.println();
                 Plateau.afficherPlateauVide();
 
                 do {
                     for (int i = 0; i < joueurs.length; i++) {
-
                         System.out.println("Voici votre chevalet " + joueurs[i] + " :");
                         char[] tirage = Outils.premierTirage(sachet, joueurs[i]);
 
@@ -51,31 +51,46 @@ public class Menu {
                         int passerSonTour = Outils.passerSonTour(joueurs[i], joueurs);
 
                         if (passerSonTour == 0) {
+                            do {
+                                System.out.println("Proposez un mot :");
+                                mot = sc.next();
+                                motValide = Outils.motValide(mot, tirage);
 
-                            System.out.println("Proposez un mot :");
-                            sc.nextLine();
-                            mot = sc.nextLine();
-                            Outils.motValide(mot, tirage);
-                            System.out.println("Où souhaitez-vous placer la première lettre ?");
+                                if (!motValide) {
+                                    System.out.println("Le mot n'est pas valide. Que souhaitez-vous faire ? (1. Proposer un autre mot / 2. Passer son tour)");
+                                    int choixMot = sc.nextInt();
+                                    if (choixMot == 2) {
+                                        break; // Sort de la boucle de proposition de mot
+                                    }
+                                }
+                            } while (!motValide);
 
-                            System.out.print("Ligne: ");
-                            String ligne = sc.nextLine();
-                            System.out.print("Colonne: ");
-                            int colonne = sc.nextInt();
+                            if (motValide) {
+                                System.out.println("Où souhaitez-vous placer la première lettre ?");
+                                System.out.print("Ligne:");
+                                String ligne = sc.next().toUpperCase();
+                                System.out.print("Colonne:");
+                                int colonne = sc.nextInt();
 
-                            System.out.println("Quel sens souhaitez-vous, répondez 0 ou 1 ? (0.Vertical ou 1.Horizontal)");
-                            int sens = sc.nextInt();
+                                System.out.println("Quel sens souhaitez-vous, répondez 0 pour Vertical ou 1 pour Horizontal ?");
+                                int sens = sc.nextInt();
 
-                            Plateau.placementMot(ligne, colonne, sens, mot);
-                            nb++;
-                        }
+                                int Intligne = (int) ligne.charAt(0) - (int) 'A';
 
-                        if (i == joueurs.length - 1) {
-                            i = 0;
+                                if (Plateau.caseEstVide(Intligne, colonne)) {
+                                    Plateau.placementMot(ligne, colonne, sens, mot);  // Placez le mot au centre du plateau
+                                    nb++;
+                                }else{
+                                    System.out.println("La case n'est pas vide");
+                                }
+                            }
+
+                            if (i == joueurs.length - 1) {
+                                i = 0;
+                            }
                         }
                     }
-
-                } while (nb < 9);
+                } while (!Outils.finDePartie(sachet));
 
                 break;
 

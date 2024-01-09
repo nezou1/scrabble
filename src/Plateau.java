@@ -48,7 +48,8 @@ public class Plateau {
     }
 
     public static char[][] placementMot(String ligne, int colonne, int sens, String mot) {
-        int indexLigne = ligne.charAt(0) - 'A';
+        int indexLigne = (int) ligne.charAt(0) - (int) 'A';
+
         int indexColonne = colonne - 1;
         String motMaj = mot.toUpperCase();
 
@@ -56,26 +57,26 @@ public class Plateau {
             for (int j = 0; j < 15; j++) {
                 if (i == indexLigne && j == indexColonne) {
                     if (Plateau.plateau[indexLigne][indexColonne + 1] != ' ') {
-                        System.out.println("Cette case est déjà prise");
+
+                        System.out.println("Cette case est déja prise");
+
                     } else {
                         if (sens == 0) { // Horizontal
-                            if (Plateau.plateau[indexLigne][indexColonne + 1] == ' ') {
+                            if (Plateau.plateau[indexLigne][indexColonne + 1] == ' ')
                                 for (int k = 0; k < mot.length(); k++) {
                                     Plateau.plateau[indexLigne][indexColonne + k] = motMaj.charAt(k);
                                     i++;
                                 }
-                            }
                         }
-                        if (sens == 1) { // Vertical
-                            if (Plateau.plateau[indexLigne + 1][indexColonne] == ' ') {
-                                for (int k = 0; k < mot.length(); k++) {
-                                    Plateau.plateau[indexLigne + k][indexColonne] = motMaj.charAt(k);
-                                    i++;
-                                }
+                    }if (sens == 1) { // Vertical
+                        if (Plateau.plateau[indexLigne + 1][indexColonne] == ' ')
+                            for (int k = 0; k < mot.length(); k++) {
+                                Plateau.plateau[indexLigne + k][indexColonne] = motMaj.charAt(k);
+                                i++;
                             }
-                        }
                     }
                 }
+
             }
         }
 

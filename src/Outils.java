@@ -127,7 +127,7 @@ public class Outils {
     }
 
     public static int nbPoints(String joueur, String mot, char[] tirageLettre, String[][][] sachet) {
-        int nbPoints = 0;
+        int nbPoints =0;
 
         // Vérifie si le mot est valide
         if (motValide(mot, tirageLettre)) {
@@ -170,7 +170,7 @@ public class Outils {
             if (passesSuccessives >= NOMBRE_MAX_PASSES_GLOBALES) {
                 // Vérifie si le nombre total de passes successives atteint la limite
                 System.out.println("Fin de la partie, nombre maximal de passes successives atteint : " + NOMBRE_MAX_PASSES_GLOBALES);
-
+                System.exit(0); // Termine l'exécution du programme
             }
         } else {
             next = 0;
@@ -185,7 +185,7 @@ public class Outils {
         passesSuccessives = 0;
     }
 
-    public static void finDePartie(String[][][] sachet) {
+    public static boolean finDePartie(String[][][] sachet) {
         boolean sachetVide = true;
         for (int i = 0; i < sachet.length; i++) {
             if (Integer.parseInt(sachet[i][0][2]) > 0) {
@@ -197,5 +197,8 @@ public class Outils {
             System.out.println("Fin de la partie, le sachet est vide.");
             System.exit(0); // Termine l'exécution du programme
         }
+
+
+        return sachetVide;
     }
 }
