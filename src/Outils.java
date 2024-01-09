@@ -150,6 +150,8 @@ public class Outils {
     }
 
 
+
+
     public static int passesSuccessives = 0;
 
     public static int passerSonTour(String joueur, String[] joueurs) {

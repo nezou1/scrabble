@@ -32,6 +32,7 @@ public class Menu {
 
                 String mot;
                 boolean motValide;
+                int nbPoints=0;
 
                 System.out.println();
                 System.out.println("Bonjour à vous ! Bienvenue au jeu de Scrabble, à vous de jouer :)");
@@ -62,6 +63,7 @@ public class Menu {
                                     if (choixMot == 2) {
                                         break; // Sort de la boucle de proposition de mot
                                     }
+
                                 }
                             } while (!motValide);
 
@@ -84,9 +86,15 @@ public class Menu {
                                     System.out.println("La case n'est pas vide");
                                 }
                             }
+                            Outils.dictionnaire();
+                            int points = Outils.nbPoints(joueurs[i], "BAC", tirage, sachet);
+                            System.out.println("Points du joueur :");
+                            System.out.println("Joueur " + joueurs[i] + ": " + nbPoints + " points");
+                            System.out.println();
+
 
                             if (i == joueurs.length - 1) {
-                                i = 0;
+                                i = -1;
                             }
                         }
                     }
