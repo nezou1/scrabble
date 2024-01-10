@@ -56,10 +56,9 @@ public class PlateauTest {
     @Test
     public void testPremierMotPlaceAuMilieu() {
 
-        assertTrue(Plateau.premierMotPlaceAuMilieu("TEST", 7));
+        assertTrue(Plateau.premierMotPlaceAuMilieu("TEST", 7,"H"));
 
-        assertFalse(Plateau.premierMotPlaceAuMilieu("TEST", 5)); // Vérifiez avec une colonne différente de 7
-        assertFalse(Plateau.premierMotPlaceAuMilieu("", 7)); // Vérifiez avec un mot vide
+        assertFalse(Plateau.premierMotPlaceAuMilieu("TEST", 5,"H")); // Vérifiez avec une colonne différente de 7
+        assertFalse(Plateau.premierMotPlaceAuMilieu("", 7,"H")); // Vérifiez avec un mot vide
     }
 }
-

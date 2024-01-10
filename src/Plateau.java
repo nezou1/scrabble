@@ -20,6 +20,7 @@ public class Plateau {
             }
         }
 
+        //Legende
         afficherCase(' ', rouge);
         System.out.print(": Mot triple \t");
         afficherCase(' ', rose);
@@ -48,6 +49,7 @@ public class Plateau {
     }
 
     public static char[][] placementMot(String ligne, int colonne, int sens, String mot) {
+
         int indexLigne = (int) ligne.charAt(0) - (int) 'A';
 
         int indexColonne = colonne - 1;
@@ -115,6 +117,7 @@ public class Plateau {
     }
 
     public static Color determinerCouleurCase(int ligne, int colonne) {
+
         int[] symmetricCoordinates = coordonneeSymetrique(colonne, ligne);
 
         int symmetricLigne = symmetricCoordinates[1];
@@ -174,6 +177,8 @@ public class Plateau {
         return blanc;
     }
 
+
+
     public static void afficherCase(char lettre, Color couleur) {
         System.out.print(" \u001B[48;2;" + couleur.getRed() + ";" + couleur.getGreen() + ";" + couleur.getBlue() + "m "
                 + " \u001B[38;2;0;0;0m" + lettre + " \u001B[0m");
@@ -183,9 +188,8 @@ public class Plateau {
         return plateau[ligne][colonne] == ' ';
     }
 
-    public static boolean premierMotPlaceAuMilieu(String mot, int colonne) {
-        return mot.length() > 0 && colonne == 7;
+    public static boolean premierMotPlaceAuMilieu(String mot, int colonne,String ligne) {
+        return mot.length() > 0 && colonne == 7 && ligne.equals("H") ;
     }
 }
-
 
