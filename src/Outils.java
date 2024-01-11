@@ -130,49 +130,79 @@ public class Outils {
         return lettresTirees;
     }
 
+    public static int nbPoints =0;
     public static int nbPoints(String joueur, String mot, char[] tirageLettre, String[][][] sachet) {
-        int nbPoints =0;
 
-        // Vérifie si le mot est valide
-        if (motValide(mot, tirageLettre)) {
-            // Calcule le nombre de points pour chaque lettre du mot
-            for (int i = 0; i < mot.length(); i++) {
+        // Calcule le nombre de points pour chaque lettre du mot
+        for (int i = 0; i < mot.length(); i++) {
 
-                char lettre = Character.toUpperCase(mot.charAt(i)); // Convertit en majuscules pour correspondre à la casse du sachet
+            char lettre = Character.toUpperCase(mot.charAt(i)); // Convertit en majuscules pour correspondre à la casse du sachet
 
-                for (int j = 0; j < sachet.length; j++) {
-                    for (int k = 0; k < sachet[j].length; k++) {
-                        if (sachet[j][k][0].equals(String.valueOf(lettre))) {
-                            nbPoints += Integer.parseInt(sachet[j][k][1]);
-                            break;
-                        }
+            for(int j = 0; j < sachet.length; j++) {
+                for (int k = 0; k < sachet[j].length; k++) {
+                    if (sachet[j][k][0].equals(String.valueOf(lettre))) {
+                        nbPoints += Integer.parseInt(sachet[j][k][1]);
                     }
                 }
             }
         }
+
         return nbPoints;
     }
 
-    public static int bonusPlateau(int ligne, int colonne,  String mot) {
-        int bonus = 1; // Bonus par défaut
+    public static int bonusCase(String joueur, String mot, int ligne, int colonne, int direction, char[] tirageLettre, String[][][] sachet) {
 
-        if (Plateau.determinerCouleurCase(ligne,colonne) == Plateau.rose) {
-            bonus *=2; //mot double
+        int score = nbPoints(joueur, mot, tirageLettre, sachet); // Calcul du score de base du mot
+        System.out.println(score);
+
+        // Vérifier pour chaque lettre du mot si des bonus s'appliquent
+        for (int i = 0; i < mot.length(); i++) {
+            int caseLigne = ligne + (direction == 1 ? i : 0);
+            int caseColonne = colonne + (direction == 0 ? i : 0);
+            char lettre = mot.charAt(i);
+
+            // Vérifier la couleur de la case et appliquer les bonus
+            Color couleurCase = Plateau.determinerCouleurCase(caseLigne, caseColonne);
+            if (couleurCase != Plateau.blanc) {
+                int valeurLettre = valeurLettreDansSachet(lettre, sachet);
+                score = appliquerBonus(score, valeurLettre, couleurCase);
+            }
         }
-        else if (Plateau.determinerCouleurCase(ligne,colonne) == Plateau.bleuFonce) {
-            bonus *=3; //lettre triple
-        }
-        else if (Plateau.determinerCouleurCase(ligne,colonne) == Plateau.bleuPastel) {
-            bonus = 0; //lettre double
-        }
-        else if (Plateau.determinerCouleurCase(ligne,colonne) == Plateau.rouge) {
-            bonus =0; //mot triple
-        }
-        else{
-            bonus = 0;
-        }
-        return bonus;
+
+        return score;
     }
+
+    public static int valeurLettreDansSachet(char lettre, String[][][] sachet) {
+
+        int valeurLettre=0;
+
+        for (int j = 0; j < sachet.length; j++) {
+            for (int k = 0; k < sachet[j].length; k++) {
+                if (sachet[j][k][0].equals(String.valueOf(lettre))) {
+                    valeurLettre = Integer.parseInt(sachet[j][k][1]);
+
+                }
+            }
+        }
+        return valeurLettre;
+    }
+
+    public static int appliquerBonus(int score, int valeurLettre, Color couleurCase) {
+
+        if(couleurCase == Plateau.bleuFonce ) {
+            return score + 3 * valeurLettre;
+        }
+        else if(couleurCase == Plateau.rose ) {
+            return score * 2;
+        }
+        else if(couleurCase == Plateau.rouge ) {
+            return score * 3;
+        }
+        else {
+            return score + 2 * valeurLettre;
+        }
+    }
+
 
 
     public static int passesSuccessives = 0;
@@ -226,4 +256,20 @@ public class Outils {
 
         return sachetVide;
     }
+
+ /*   public static void main(String[] args){
+        String[][][] sachet = Outils.sachets();
+        String joueur = "Alice";
+        String mot = "beau";
+        int ligne = 0;
+        int colonne = 0;
+        int sens = 0; // 0 pour horizontal, 1 pour vertical
+        char[] tirageLettre = {'T', 'E', 'S', 'T', 'A' ,'B', 'C'};
+
+        int scoremot = nbPoints("Alice", "beau", tirageLettre, sachet);
+        System.out.println(scoremot);
+
+        int score = Outils.bonusCase(joueur, mot, ligne, colonne, sens, tirageLettre, sachet);
+        System.out.println(score);
+    }*/
 }

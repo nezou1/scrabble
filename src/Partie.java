@@ -15,11 +15,11 @@ public class Partie {
         do{
             System.out.println("Combien de joueurs êtes-vous ? ( 4 maxi )");
             nbjoueurs = sc.nextInt();
-            do{
+            while((nbjoueurs<0)){
                 System.out.println(ERREUR+"Erreur de saisie : veuillez recommencer \n"+ERREUR_RESET);
                 System.out.println("Combien de joueurs êtes-vous ? ( 4 maxi )");
                 nbjoueurs = sc.nextInt();
-            }while((nbjoueurs<0));
+            }
 
             joueurs = new String[nbjoueurs];
 
@@ -98,8 +98,11 @@ public class Partie {
         Plateau.placementMot("H", 8, sens, mot); // Placement en case H8
 
         // Afficher les points après le premier tour
-        points =  Outils.nbPoints(joueurs[0], mot, tirage, sachet);
-        System.out.println(points);
+        points = Outils.bonusCase(joueurs[0], mot,7, 7, sens,  tirage, sachet);
+
+        System.out.println("Points du joueur :");
+        System.out.println("Joueur " + joueurs[0] + ": " + points + " points");
+        System.out.println();
 
     }
 
@@ -147,8 +150,8 @@ public class Partie {
 
             if (motValide) {
 
-                points += Outils.nbPoints(joueur, mot, tirage, sachet);
                 int Intligne = (int) ligne.charAt(0) - (int) 'A';
+                points += Outils.bonusCase(joueur, mot, Intligne, colonne, sens,  tirage, sachet);
 
                 if (Plateau.caseEstVide(Intligne, colonne)) {
                     Plateau.placementMot(ligne, colonne, sens, mot);
@@ -162,7 +165,6 @@ public class Partie {
             System.out.println("Points du joueur :");
             System.out.println("Joueur " + joueur + ": " + points + " points");
             System.out.println();
-
 
         }
     }
